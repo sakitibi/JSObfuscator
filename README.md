@@ -1,2 +1,1 @@
-## 12ninstudioがNode.js Electronを用いて開発しているSNSアプリ
-### まだ開発中
+## 12ninstudioがNode.js Electronを用いて開発している難読化アプリ
