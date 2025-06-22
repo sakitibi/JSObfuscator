@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Security-Policy" content="">
+    <link rel="stylesheet" href="./.Styles/login.css">
+    <link rel="shortcut icon" href="../build/icon_512x512@2x.icns">
+    <title>JSObfuscator</title>
+</head>
+<body>
+    <div class="home-window">
+        <h2>12ninアカウントにログイン</h2>
+        <form id="login-form">
+            <label for="email">メール</label>
+            <input type="email" id="email" placeholder="Email" required />
+            <br>
+            <label for="password">パスワード</label>
+            <input type="password" id="password" placeholder="Password" minlength="6" required/>
+            <br>
+            <label for="username">ユーザー名</label>
+            <input type="text" id="username" placeholder="Username" required />
+            <br>
+            <label for="game-select">各ゲームを持っていますか?</label>
+            <select id="game-select" required>
+                <option value="0" id="option0">MinecraftとAmongUsを両方持っている</option>
+                <option value="1" id="option1">Minecraftだけ持っている</option>
+                <option value="2" id="option2">AmongUsだけ持っている</option>
+                <option value="3" id="option3">どちらとも持っていない</option>
+            </select>
+            <br>
+            <input type="submit" class="submit" value="ログイン" />
+        </form>
+        <h4>まだ12ninアカウントを持っていませんか?</h4>
+        <h5>Webでのみ12ninアカウントを持っている方は登録フォームでWebの12ninアカウントの情報を入力</h5>
+        <h5>Webでも12ninアカウントを持っていない方は<a href="https://sakitibi-com9.webnode.jp/page/9">こちらのリンク先</a>でWebの12ninアカウントを作成してログインして下さい</h5>
+        <h3>
+            <a href="./.signup.html">12ninアカウントを今すぐ登録</a>
+        </h3>
+    </div>
+    <script src="./.Scripts/oncontextmenu.js"></script>
+    <script src="./.Scripts/login.js"></script>
+</body>
+</html>

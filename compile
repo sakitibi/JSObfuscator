@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# ビルドログ表示
+echo "🚀 .dmgビルドを開始します..."
+
+# Electron ビルド
+npx tsc
+mv -f dist/index.js main/.Scripts
+mv -f dist/preload.js main/.Scripts
+echo "🛠 electron-builder で .dmg を作成中..."
+npx electron-builder --mac --publish never
+
+# 完了メッセージ
+if [ $? -eq 0 ]; then
+  echo "🎉 .dmg ビルドが完了しました！"
+else
+  echo "❌ .dmg ビルドに失敗しました"
+fi
