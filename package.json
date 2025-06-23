@@ -1,6 +1,6 @@
 {
   "name": "JSObfuscator",
-  "version": "1.21.210",
+  "version": "1.21.2147483647",
   "main": "main/.Scripts/index.js",
   "scripts": {
     "start": "electron .",
@@ -44,10 +44,7 @@
           "path": "/Applications"
         }
       ]
-    },
-    "asarUnpack": [
-      "main/**/*"
-    ]
+    }
   },
   "dependencies": {
     "electron-updater": "^6.6.2",

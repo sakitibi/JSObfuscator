@@ -1,7 +1,6 @@
 const ultraUniqueLoadingScreenEl = document.querySelector(".loading");
 let ultraUniqueRandomSpeed = Math.floor(Math.random() * 101 / 5);
 let ultraUniqueCooldown = Math.floor(Math.random() * 10 + 2);
-let ultraUniqueImageSwitch = Math.floor(Math.random() * 2);
 let ultraUniqueImageContainer = document.getElementById("image-container");
 let ultraUniqueProgress = 0;
 let ultraUniqueProgressFill = document.getElementById('progress-fill'); 
@@ -10,17 +9,6 @@ let IsObfuscate = false;
 let login;
 
 function startProgressBar() {
-  if (ultraUniqueImageSwitch === 1 && ultraUniqueImageContainer) {
-    ultraUniqueImageContainer.innerHTML = `
-      <img 
-        id="loading-image" 
-        src="./.img/osaka-kansai-banpaku.png" 
-        onselect="return false" 
-        onmousedown="return false"
-      >
-    `;
-  }
-
   const ultraUniqueProgressInterval = setInterval(() => {
     if(IsObfuscate === true){
       setInterval(() => {
