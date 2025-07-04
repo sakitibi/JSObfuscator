@@ -431,3 +431,4 @@ electron_1.ipcMain.handle('save-ts-as-js', async (_event, tsCode) => {
         return `エラー: ${e.message}`;
     }
 });
+electron_1.ipcMain.on('quit-app', () => electron_1.app.quit());
