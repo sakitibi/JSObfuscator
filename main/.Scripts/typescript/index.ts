@@ -465,3 +465,5 @@ ipcMain.handle('save-ts-as-js', async (_event, tsCode: string) => {
     return `エラー: ${e.message}`;
   }
 });
+
+ipcMain.on('quit-app', () => app.quit());
