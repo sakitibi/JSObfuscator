@@ -14,7 +14,7 @@ let win = null;
 let pendingLink = null; // ここで一時保存
 let isLoggedIn = true;
 const appid = "4a534f626675736361746f72";
-const SERVICE = '12ninstudio';
+const SERVICE = '13ninstudio';
 // ── 1. DeepLink ハンドラをモジュールトップレベルに切り出し ──
 function handleDeepLink(urlStr) {
     if (!win)
@@ -48,7 +48,7 @@ electron_1.app.on('will-finish-launching', () => {
     });
 });
 electron_1.ipcMain.handle('accountsettings', async () => {
-    await electron_1.shell.openExternal('https://sakitibi-com9.webnode.jp/page/24/bf921c72-d969-5837-122a-20ba91bad023/');
+    await electron_1.shell.openExternal('https://sakitibi-com9.webnode.jp/page/24/b961c547-90b1-0d30-a87e-8bb1aa67eca9/');
     // email を先に取得する必要がある！
     let email;
     if (win && win.webContents) {
@@ -313,12 +313,33 @@ function updateMenu(win) {
                             accelerator: 'Cmd+Shift+M',
                             click: () => electron_1.shell.openExternal('https://wikiwiki.jp/12ninstudio/-s/ee63b0ec'),
                         },
+                        {
+                            label: '餅尾戦争支持メンバー',
+                            submenu: [
+                                {
+                                    label: 'みぞれ',
+                                    click: () => electron_1.shell.openExternal('https://youtube.com/@mizore471'),
+                                },
+                                {
+                                    label: 'さきちび',
+                                    click: () => electron_1.shell.openExternal('https://youtube.com/channel/UCJcP2mfDCtKnADrbDDjT_8g'),
+                                },
+                                {
+                                    label: '匿名',
+                                    click: () => electron_1.shell.openExternal('https://discord.gg/zbvXxCWcg6'),
+                                },
+                                {
+                                    label: 'ひなにい',
+                                    click: () => electron_1.shell.openExternal('https://youtube.com/@HinaRuka21'),
+                                }
+                            ]
+                        }
                     ],
-                },
+                }
             ],
         },
         {
-            label: '12ninアカウント',
+            label: '13ninアカウント',
             submenu: [accountMenuItem],
         },
     ];

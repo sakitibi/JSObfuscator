@@ -32,7 +32,7 @@ form.addEventListener('submit', async (event) => {
     } else if (password_get && username_get && storedSelect) {
       alert('情報が正しくありません');
     } else {
-      throw new Error('まだ12ninアカウントを登録していません。\nWebサイトでログインしている方は登録画面で\n自分の12ninアカウントの情報を入力してください。');
+      throw new Error('まだ13ninアカウントを登録していません。\nWebサイトでログインしている方は登録画面で\n自分の13ninアカウントの情報を入力してください。');
     }
   } catch (error) {
     console.error("エラー", error);

@@ -1,10 +1,6 @@
 {
   "name": "JSObfuscator",
-<<<<<<< HEAD
   "version": "2.0.0",
-=======
-  "version": "1.21.2147483647",
->>>>>>> b63c305ce1316bd0c9e5f4fed71befee9ff515e6
   "main": "main/.Scripts/index.js",
   "scripts": {
     "start": "electron .",
@@ -12,11 +8,7 @@
     "dist": "electron-builder"
   },
   "build": {
-<<<<<<< HEAD
     "appId": "com.13ninstudio.jsobfuscator",
-=======
-    "appId": "com.12ninstudio.jsobfuscator",
->>>>>>> b63c305ce1316bd0c9e5f4fed71befee9ff515e6
     "mac": {
       "category": "public.app-category.developer-tools",
       "target": [
@@ -62,13 +54,8 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@types/node": "^24.0.10",
     "electron": "^36.7.0",
-=======
-    "@types/node": "^24.0.3",
-    "electron": "^36.5.0",
->>>>>>> b63c305ce1316bd0c9e5f4fed71befee9ff515e6
     "electron-builder": "^26.0.12",
     "ts-node": "^10.9.2"
   }

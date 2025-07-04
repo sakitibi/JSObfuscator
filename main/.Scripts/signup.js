@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 await window.electronAPI.loginredirects();
             } else {
                 console.log("[signup.js] アカウントは既に存在しています（保存せず）");
-                alert("すでに12ninアカウントは存在しています");
+                alert("すでに13ninアカウントは存在しています");
             }
         } catch (error) {
             console.error("[signup.js] アカウント情報取得エラー:", error);
