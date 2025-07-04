@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "outDir": "dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "typeRoots": [
+      "node_modules/@types",       // 標準型
+      "node_modules/tbw-modules"  // ← 自作モジュールを参照
+    ]
+  },
+  "include": ["main/.Scripts/typescript/**/*.ts"]
+}
