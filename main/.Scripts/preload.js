@@ -19,11 +19,12 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
     obfuscateTS: (code) => electron_1.ipcRenderer.invoke('obfuscate-ts', code),
 });
 electron_1.contextBridge.exposeInMainWorld('secureAPI', {
-    save: (email, password, username, option) => electron_1.ipcRenderer.invoke('save-credentials', email, password, username, option),
+    save: (email, password, username, birthday, option) => electron_1.ipcRenderer.invoke('save-credentials', email, password, username, birthday, option),
     setCurrentEmail: (email) => electron_1.ipcRenderer.invoke('set-current-email', email),
     getCurrentEmail: () => electron_1.ipcRenderer.invoke('get-current-email'),
     getSelect: (email) => electron_1.ipcRenderer.invoke('get-select', email), // ← New!
     get: (email) => electron_1.ipcRenderer.invoke('get-credentials', email),
+    getBirthday: (email) => electron_1.ipcRenderer.invoke('get-birthday', email),
     delete: (email) => electron_1.ipcRenderer.invoke('delete-credentials', email),
     list: (email) => electron_1.ipcRenderer.invoke('list-credentials', email),
 });

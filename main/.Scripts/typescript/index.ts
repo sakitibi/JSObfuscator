@@ -48,6 +48,13 @@ app.on('will-finish-launching', () => {
   });
 });
 
+function encodeBase64Unicode(str:any) {
+    const bytes = new TextEncoder().encode(str); // UTF-8に変換
+    let binary = '';
+    bytes.forEach(b => binary += String.fromCharCode(b));
+    return btoa(binary); // Base64エンコード
+}
+
 ipcMain.handle('accountsettings', async () => {
   await shell.openExternal('https://sakitibi-com9.webnode.jp/page/24/b961c547-90b1-0d30-a87e-8bb1aa67eca9/');
 
@@ -85,18 +92,19 @@ ipcMain.handle('get-current-email', async () => {
   return currentEmail;
 });
 
-ipcMain.handle('save-credentials', async (_e, email, password, username, option) => {
+ipcMain.handle('save-credentials', async (_e, email, password, username, birthday, option) => {
   try{
-    console.log("[Main] save-credentials 呼び出し:", email, password, username);
+    console.log("[Main] save-credentials 呼び出し:", email, password, username, birthday, option);
     await keytar.setPassword(`${SERVICE}_password`, email, password);
     await keytar.setPassword(`${SERVICE}_username`, email, username);
+    await keytar.setPassword(`${SERVICE}_birthday`, email, birthday);
     const safeOption = (option ?? '0').toString().trim();
     await keytar.setPassword(`${SERVICE}_select`, email, safeOption);
     const savedOption = await keytar.getPassword(`${SERVICE}_select`, email);
     console.log("[save-credentials] 保存後のオプション:", savedOption);
     await keytar.setPassword(`${SERVICE}_email`, 'current', email);
     console.log('[save-credentials] 保存された current email:', email);
-    console.log("[Main] save-credentials 呼び出し:", { email, password, username, option });
+    console.log("[Main] save-credentials 呼び出し:", { email, password, username, birthday, option });
     return true;
   } catch(error) {
     console.error("セーブエラー", error);
@@ -117,12 +125,13 @@ ipcMain.handle('get-credentials', async (_e, email) => {
     
     const password = await keytar.getPassword(`${SERVICE}_password`, email);
     const username = await keytar.getPassword(`${SERVICE}_username`, email);
+    const birthday = await keytar.getPassword(`${SERVICE}_birthday`, email);
     const option = (await keytar.getPassword(`${SERVICE}_select`, email))?.trim() || '0';
     const currentEmail = await keytar.getPassword(`${SERVICE}_email`, 'current');
 
     console.log('[get-credentials] 現在保存されている current email:', currentEmail);
 
-    return { password, username, option };
+    return { password, username, birthday, option };
   } catch(error){
     console.error("ゲットエラー", error);
     return false;
@@ -132,6 +141,7 @@ ipcMain.handle('get-credentials', async (_e, email) => {
 ipcMain.handle('delete-credentials', async (_e, email) => {
   await keytar.deletePassword(`${SERVICE}_password`, email);
   await keytar.deletePassword(`${SERVICE}_username`, email);
+  await keytar.deletePassword(`${SERVICE}_birthday`, email);
   await keytar.deletePassword(`${SERVICE}_select`, email);
   await keytar.deletePassword(`${SERVICE}_email`, 'current');
   return true;
@@ -154,6 +164,25 @@ ipcMain.handle('get-select', async (_e, email) => {
   return select || '';
 });
 
+ipcMain.handle('get-birthday', async (_e, email) => {
+  try{
+    console.log('[get-credentials] typeof email:', typeof email);
+    console.log('[get-credentials] raw email:', email);
+    console.log('[get-credentials] is trimmed empty?:', email?.trim() === '');
+    console.log('[get-credentials] 受け取った email:', JSON.stringify(email), '長さ:', email?.length);
+    if (!email || typeof email !== 'string' || email.trim() === '') {
+      console.warn('[get-credentials] 無効な email:', email);
+      throw new Error('Account is required.');
+    }
+    
+    const birthday = await keytar.getPassword(`${SERVICE}_birthday`, email);
+    return { birthday };
+  } catch(error){
+    console.error("ゲットエラー", error);
+    return false;
+  }
+});
+
 ipcMain.handle('loginredirects', async () => {
   try {
     // 'current' アカウントとして保存された email を取得
@@ -165,23 +194,25 @@ ipcMain.handle('loginredirects', async () => {
     // keytar から各種資格情報を取得
     const passwordRaw = await keytar.getPassword(`${SERVICE}_password`, email);
     const usernameRaw = await keytar.getPassword(`${SERVICE}_username`, email);
+    const birthdayRaw = await keytar.getPassword(`${SERVICE}_birthday`, email);
     const selectValue = await keytar.getPassword(`${SERVICE}_select`, email) || '0';
     console.log('[loginredirects] selectValue:', selectValue, 'typeof:', typeof selectValue);
     const select = selectValue?.trim() || '0';
 
-    if (!passwordRaw || !usernameRaw) {
+    if (!passwordRaw || !usernameRaw || !birthdayRaw) {
       return { success: false, error: 'keytar からユーザー情報の取得に失敗' };
     }
 
     console.log('[loginredirects] 取得した current email:', email);
 
     // 2段階の HEX 変換
-    const emailHex = Buffer.from(Buffer.from(email, 'utf8').toString('hex'), 'utf8').toString('hex');
-    const passwordHex = Buffer.from(Buffer.from(passwordRaw, 'utf8').toString('hex'), 'utf8').toString('hex');
-    const usernameHex = Buffer.from(Buffer.from(usernameRaw, 'utf8').toString('hex'), 'utf8').toString('hex');
+    const emailHex = encodeBase64Unicode(Buffer.from(email, 'utf8').toString('hex'));
+    const passwordHex = encodeBase64Unicode(Buffer.from(passwordRaw, 'utf8').toString('hex'));
+    const usernameHex = encodeBase64Unicode(Buffer.from(usernameRaw, 'utf8').toString('hex'));
+    const birthdayHex = encodeBase64Unicode(Buffer.from(birthdayRaw, 'utf8').toString('hex'));
 
     // 外部リンク URL を生成
-    const url = `https://sakitibi.github.io/selects/${appid}/${select}/${encodeURIComponent(usernameHex)}/${encodeURIComponent(emailHex)}/${passwordHex}/${encodeURIComponent(select)}`;
+    const url = `https://sakitibi.github.io/selects/${appid}/${encodeURIComponent(usernameHex)}/${encodeURIComponent(emailHex)}/${passwordHex}/${birthdayHex}/${select}?pattern=0`;
     console.log("[loginredirects] 外部へのリダイレクトURL:", url);
 
     await shell.openExternal(url);

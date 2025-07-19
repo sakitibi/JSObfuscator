@@ -19,12 +19,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
 });
 
 contextBridge.exposeInMainWorld('secureAPI', {
-  save: (email:string, password:string, username:string, option:string) =>
-    ipcRenderer.invoke('save-credentials', email, password, username, option),
+  save: (email:string, password:string, username:string, birthday:any, option:string) =>
+    ipcRenderer.invoke('save-credentials', email, password, username, birthday, option),
   setCurrentEmail: (email:string) => ipcRenderer.invoke('set-current-email', email),
   getCurrentEmail: () => ipcRenderer.invoke('get-current-email'),
   getSelect: (email:string) => ipcRenderer.invoke('get-select', email), // ← New!
   get: (email:string) => ipcRenderer.invoke('get-credentials', email),
+  getBirthday: (email:string) => ipcRenderer.invoke('get-birthday', email),
   delete: (email:string) => ipcRenderer.invoke('delete-credentials', email),
   list: (email:string) => ipcRenderer.invoke('list-credentials', email),
 });

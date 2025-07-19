@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
+            const birthday = document.getElementById("birthday").value.trim();
             // current email の取得も含めて
             const email = await window.secureAPI.getCurrentEmail() || document.getElementById('email').value.trim();
             const selectedOption = gameSelectElem.value.trim(); // この変数名で統一
@@ -18,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const stored = await window.secureAPI.get(email);
             const username_get = stored?.username || '';
-            const passwordget = stored?.password || '';
+            const password_get = stored?.password || '';
+            const birthday_get = stored?.birthday || '';
             const option_get = (stored?.option ?? '0').toString();
 
             // 万が一のため selectedOption の存在チェック
@@ -27,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // 同一内容かどうかをチェック
-            if (username !== username_get || password !== passwordget || selectedOption !== option_get) {
+            if (username !== username_get || password !== password_get || selectedOption !== option_get || birthday !== birthday_get) {
                 console.log("[signup.js] アカウント未重複と判断。保存を開始");
                 // この部分で selectedOption を渡す
-                await window.secureAPI.save(email, password, username, selectedOption);
+                await window.secureAPI.save(email, password, username, birthday, selectedOption);
                 await window.secureAPI.setCurrentEmail(email);
                 console.log("[signup.js] 保存完了。リダイレクト開始");
                 await window.electronAPI.loginredirects();
