@@ -244,11 +244,11 @@ function updateMenu(win) {
                 { type: 'separator' },
                 { role: 'services', label: 'サービス' },
                 { type: 'separator' },
-                { role: 'hide', label: 'JSObfuscator を隠す' },
-                { role: 'hideothers', label: 'ほかを隠す' },
+                { role: 'hide', label: 'TrainBuilders を隠す' },
+                { role: 'hideOthers', label: 'ほかを隠す' },
                 { role: 'unhide', label: 'すべて表示' },
                 { type: 'separator' },
-                { role: 'quit', label: 'JSObfuscator を終了' },
+                { role: 'quit', label: 'TrainBuilders を終了' },
             ],
         },
         {
@@ -280,7 +280,7 @@ function updateMenu(win) {
                             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
                     },
                 },
-                { label: 'DevTools を開く', accelerator: 'Cmd+Option+I', role: "toggleDevTools" },
+                //{ label: 'DevTools を開く', accelerator: 'Cmd+Option+I', role: "toggleDevTools"},
             ],
         },
         {
@@ -318,14 +318,9 @@ function updateMenu(win) {
                     label: '名前は長い方が有利関連',
                     submenu: [
                         {
-                            label: '反対!',
-                            accelerator: 'Cmd+N',
-                            click: () => electron_1.shell.openExternal('https://wikiwiki.jp/12ninstudio/-s/20b77771'),
-                        },
-                        {
                             label: '被害者リスト',
-                            accelerator: 'Cmd+Shift+N',
-                            click: () => electron_1.shell.openExternal('https://wikiwiki.jp/12ninstudio/-s/0f78bf15'),
+                            accelerator: 'Cmd+N',
+                            click: () => electron_1.shell.openExternal('https://asakura-wiki.vercel.app/wiki/13ninstudio/名前は長い方が有利被害者'),
                         },
                     ],
                 },
@@ -335,12 +330,12 @@ function updateMenu(win) {
                         {
                             label: '撲滅委員会',
                             accelerator: 'Cmd+M',
-                            click: () => electron_1.shell.openExternal('https://wikiwiki.jp/12ninstudio/-s/ea9a77b0'),
+                            click: () => electron_1.shell.openExternal('https://asakura-wiki.vercel.app/special_wiki/maitetsu_bkmt'),
                         },
                         {
                             label: 'みぞれさんの功績',
                             accelerator: 'Cmd+Shift+M',
-                            click: () => electron_1.shell.openExternal('https://wikiwiki.jp/12ninstudio/-s/ee63b0ec'),
+                            click: () => electron_1.shell.openExternal('https://asakura-wiki.vercel.app/wiki/13ninstudio/Mizore.jp/Result'),
                         },
                         {
                             label: '餅尾戦争支持メンバー',
@@ -364,7 +359,7 @@ function updateMenu(win) {
                             ]
                         }
                     ],
-                }
+                },
             ],
         },
         {
