@@ -441,13 +441,13 @@ ipcMain.handle('obfuscate-js', async (_event:any, code: string) => {
     const result = obfuscator.obfuscate(jsCode, {
       compact: true,
       renameGlobals: true,
-      identifierNamesGenerator: 'mangled',   // a, b, c...
-      stringArray: true,
-      stringArrayThreshold: 0.4,             // 40%だけ変換
-      stringArrayRotate: true,
-      stringArrayShuffle: true,
-      controlFlowFlattening: false,          // 不自然な構造を避ける
-      deadCodeInjection: false,              // 機械っぽい不要コードは避ける
+      identifierNamesGenerator: 'mangled',   // a,b,c... にする
+      stringArray: false,                    // 配列化を禁止（0x系を避ける）
+      controlFlowFlattening: false,          // 怪しい if/while を避ける
+      deadCodeInjection: false,              // 不自然なダミーを避ける
+      transformObjectKeys: true,             // オブジェクトのキーだけ変換
+      simplify: true,                        // シンプルに畳む
+      numbersToExpressions: false,           // 0x系回避
     });
 
     return result.getObfuscatedCode();
@@ -472,13 +472,13 @@ ipcMain.handle('obfuscate-ts', async (_event:any, tsCode: string) => {
     const obfuscated = obfuscator.obfuscate(jsCode, {
       compact: true,
       renameGlobals: true,
-      identifierNamesGenerator: 'mangled',   // a, b, c...
-      stringArray: true,
-      stringArrayThreshold: 0.4,             // 40%だけ変換
-      stringArrayRotate: true,
-      stringArrayShuffle: true,
-      controlFlowFlattening: false,          // 不自然な構造を避ける
-      deadCodeInjection: false,              // 機械っぽい不要コードは避ける
+      identifierNamesGenerator: 'mangled',   // a,b,c... にする
+      stringArray: false,                    // 配列化を禁止（0x系を避ける）
+      controlFlowFlattening: false,          // 怪しい if/while を避ける
+      deadCodeInjection: false,              // 不自然なダミーを避ける
+      transformObjectKeys: true,             // オブジェクトのキーだけ変換
+      simplify: true,                        // シンプルに畳む
+      numbersToExpressions: false,           // 0x系回避
     });
 
     return obfuscated.getObfuscatedCode();
