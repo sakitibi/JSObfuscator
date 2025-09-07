@@ -404,26 +404,25 @@ electron_1.app.on('window-all-closed', () => {
 });
 electron_1.ipcMain.handle('obfuscate-js', async (_event, code) => {
     try {
-        // Step 1: 独自加工（コメントとダミー関数を注入）
+        const helperName = `_helper_${Math.random().toString(36).slice(2)}`;
         let jsCode = `
     /* Copyright ${(new Date()).getFullYear()} ${SERVICE}, Inc */
     ${code}
-    function _helper_${Math.random().toString(36).slice(2)}() {
+    function ${helperName}() {
       return ${Math.floor(Math.random() * 1000)};
     }
-    _helper_${Math.random().toString(36).slice(2)}();
+    ${helperName}();
     `;
-        // Step 2: obfuscator にかける（ランダム設定で自然さを演出）
         const result = javascript_obfuscator_1.default.obfuscate(jsCode, {
             compact: false,
             renameGlobals: true,
-            identifierNamesGenerator: 'mangled', // a,b,c... にする
-            stringArray: false, // 配列化を禁止（0x系を避ける）
-            controlFlowFlattening: false, // 怪しい if/while を避ける
-            deadCodeInjection: false, // 不自然なダミーを避ける
-            transformObjectKeys: true, // オブジェクトのキーだけ変換
-            simplify: true, // シンプルに畳む
-            numbersToExpressions: false, // 0x系回避
+            identifierNamesGenerator: 'mangled',
+            stringArray: false,
+            controlFlowFlattening: false,
+            deadCodeInjection: false,
+            transformObjectKeys: true,
+            simplify: true,
+            numbersToExpressions: false,
         });
         return result.getObfuscatedCode();
     }
@@ -433,30 +432,28 @@ electron_1.ipcMain.handle('obfuscate-js', async (_event, code) => {
 });
 electron_1.ipcMain.handle('obfuscate-ts', async (_event, tsCode) => {
     try {
-        // Step 1: TypeScript → JavaScript
         let jsCode = typescript_1.default.transpileModule(tsCode, {
             compilerOptions: { module: typescript_1.default.ModuleKind.CommonJS }
         }).outputText;
-        // Step 2: 独自加工（例: コメントとダミー関数を注入）
+        const helperName = `_helper_${Math.random().toString(36).slice(2)}`;
         jsCode = `
     /* Copyright ${(new Date()).getFullYear()} ${SERVICE}, Inc */
     ${jsCode}
-    function _helper_${Math.random().toString(36).slice(2)}() {
+    function ${helperName}() {
       return ${Math.floor(Math.random() * 1000)};
     }
-    _helper_${Math.random().toString(36).slice(2)}();
+    ${helperName}();
     `;
-        // Step 3: obfuscator にかける
         const obfuscated = javascript_obfuscator_1.default.obfuscate(jsCode, {
             compact: false,
             renameGlobals: true,
-            identifierNamesGenerator: 'mangled', // a,b,c... にする
-            stringArray: false, // 配列化を禁止（0x系を避ける）
-            controlFlowFlattening: false, // 怪しい if/while を避ける
-            deadCodeInjection: false, // 不自然なダミーを避ける
-            transformObjectKeys: true, // オブジェクトのキーだけ変換
-            simplify: true, // シンプルに畳む
-            numbersToExpressions: false, // 0x系回避
+            identifierNamesGenerator: 'mangled',
+            stringArray: false,
+            controlFlowFlattening: false,
+            deadCodeInjection: false,
+            transformObjectKeys: true,
+            simplify: true,
+            numbersToExpressions: false,
         });
         return obfuscated.getObfuscatedCode();
     }
