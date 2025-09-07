@@ -421,7 +421,7 @@ electron_1.ipcMain.handle('obfuscate-js', async (_event, code) => {
             controlFlowFlattening: false,
             deadCodeInjection: false,
             transformObjectKeys: true,
-            simplify: true,
+            simplify: false,
             numbersToExpressions: false,
         });
         return result.getObfuscatedCode();
@@ -452,7 +452,7 @@ electron_1.ipcMain.handle('obfuscate-ts', async (_event, tsCode) => {
             controlFlowFlattening: false,
             deadCodeInjection: false,
             transformObjectKeys: true,
-            simplify: true,
+            simplify: false,
             numbersToExpressions: false,
         });
         return obfuscated.getObfuscatedCode();

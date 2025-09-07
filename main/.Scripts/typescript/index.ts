@@ -451,7 +451,7 @@ ipcMain.handle('obfuscate-js', async (_event:any, code: string) => {
       controlFlowFlattening: false,
       deadCodeInjection: false,
       transformObjectKeys: true,
-      simplify: true,
+      simplify: false,
       numbersToExpressions: false,
     });
 
@@ -486,7 +486,7 @@ ipcMain.handle('obfuscate-ts', async (_event:any, tsCode: string) => {
       controlFlowFlattening: false,
       deadCodeInjection: false,
       transformObjectKeys: true,
-      simplify: true,
+      simplify: false,
       numbersToExpressions: false,
     });
 
