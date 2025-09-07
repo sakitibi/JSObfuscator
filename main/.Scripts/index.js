@@ -402,23 +402,53 @@ electron_1.app.on('window-all-closed', () => {
     if (process.platform !== 'darwin')
         electron_1.app.quit();
 });
-electron_1.ipcMain.handle('obfuscate-js', async (event, code) => {
-    const result = javascript_obfuscator_1.default.obfuscate(code, {
-        compact: true,
-        controlFlowFlattening: true,
-    });
-    return result.getObfuscatedCode();
+electron_1.ipcMain.handle('obfuscate-js', async (_event, code) => {
+    try {
+        // Step 1: 独自加工（コメントとダミー関数を注入）
+        let jsCode = `
+      /* Copyright 2025 ${SERVICE}, Inc */ ${code}
+    `;
+        // Step 2: obfuscator にかける（ランダム設定で自然さを演出）
+        const result = javascript_obfuscator_1.default.obfuscate(jsCode, {
+            compact: true,
+            renameGlobals: true,
+            identifierNamesGenerator: 'mangled',
+            deadCodeInjection: true,
+            deadCodeInjectionThreshold: 0.15 + Math.random() * 0.2, // 15〜35%
+            stringArray: true,
+            stringArrayThreshold: 0.6 + Math.random() * 0.3, // 60〜90%
+            stringArrayRotate: true,
+            stringArrayShuffle: true,
+            controlFlowFlattening: true,
+            controlFlowFlatteningThreshold: 0.2 + Math.random() * 0.3, // 20〜50%
+        });
+        return result.getObfuscatedCode();
+    }
+    catch (err) {
+        return `エラー: ${err.message}`;
+    }
 });
 electron_1.ipcMain.handle('obfuscate-ts', async (_event, tsCode) => {
     try {
-        // TypeScript → JavaScript に変換
-        const jsCode = typescript_1.default.transpileModule(tsCode, {
+        // Step 1: TypeScript → JavaScript
+        let jsCode = typescript_1.default.transpileModule(tsCode, {
             compilerOptions: { module: typescript_1.default.ModuleKind.CommonJS }
         }).outputText;
-        // 難読化
+        // Step 2: 独自加工（例: コメントとダミー関数を注入）
+        jsCode = `
+      /* Copyright 2025 ${SERVICE}, Inc */ ${jsCode}
+    `;
+        // Step 3: obfuscator にかける
         const obfuscated = javascript_obfuscator_1.default.obfuscate(jsCode, {
             compact: true,
+            renameGlobals: true,
+            identifierNamesGenerator: 'mangled',
+            deadCodeInjection: true,
+            deadCodeInjectionThreshold: 0.15 + Math.random() * 0.2, // 15〜35%
+            stringArray: true,
+            stringArrayThreshold: 0.6 + Math.random() * 0.3, // 60〜90%
             controlFlowFlattening: true,
+            controlFlowFlatteningThreshold: 0.2 + Math.random() * 0.3, // 20〜50%
         });
         return obfuscated.getObfuscatedCode();
     }

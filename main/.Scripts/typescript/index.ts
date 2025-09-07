@@ -430,25 +430,57 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
-ipcMain.handle('obfuscate-js', async (event, code) => {
-  const result = obfuscator.obfuscate(code, {
-    compact: true,
-    controlFlowFlattening: true,
-  });
-  return result.getObfuscatedCode();
+ipcMain.handle('obfuscate-js', async (_event:any, code: string) => {
+  try {
+    // Step 1: 独自加工（コメントとダミー関数を注入）
+    let jsCode = `
+      /* Copyright 2025 ${SERVICE}, Inc */ ${code}
+    `;
+
+    // Step 2: obfuscator にかける（ランダム設定で自然さを演出）
+    const result = obfuscator.obfuscate(jsCode, {
+      compact: true,
+      renameGlobals: true,
+      identifierNamesGenerator: 'mangled',
+      deadCodeInjection: true,
+      deadCodeInjectionThreshold: 0.15 + Math.random() * 0.2, // 15〜35%
+      stringArray: true,
+      stringArrayThreshold: 0.6 + Math.random() * 0.3,        // 60〜90%
+      stringArrayRotate: true,
+      stringArrayShuffle: true,
+      controlFlowFlattening: true,
+      controlFlowFlatteningThreshold: 0.2 + Math.random() * 0.3, // 20〜50%
+    });
+
+    return result.getObfuscatedCode();
+  } catch (err: any) {
+    return `エラー: ${err.message}`;
+  }
 });
 
-ipcMain.handle('obfuscate-ts', async (_event, tsCode: string) => {
+ipcMain.handle('obfuscate-ts', async (_event:any, tsCode: string) => {
   try {
-    // TypeScript → JavaScript に変換
-    const jsCode = ts.transpileModule(tsCode, {
+    // Step 1: TypeScript → JavaScript
+    let jsCode = ts.transpileModule(tsCode, {
       compilerOptions: { module: ts.ModuleKind.CommonJS }
     }).outputText;
 
-    // 難読化
+    // Step 2: 独自加工（例: コメントとダミー関数を注入）
+    jsCode = `
+      /* Copyright 2025 ${SERVICE}, Inc */ ${jsCode}
+    `;
+
+    // Step 3: obfuscator にかける
     const obfuscated = obfuscator.obfuscate(jsCode, {
       compact: true,
+      renameGlobals: true,
+      identifierNamesGenerator: 'mangled',
+      deadCodeInjection: true,
+      deadCodeInjectionThreshold: 0.15 + Math.random() * 0.2, // 15〜35%
+      stringArray: true,
+      stringArrayThreshold: 0.6 + Math.random() * 0.3,       // 60〜90%
       controlFlowFlattening: true,
+      controlFlowFlatteningThreshold: 0.2 + Math.random() * 0.3, // 20〜50%
     });
 
     return obfuscated.getObfuscatedCode();
@@ -457,7 +489,7 @@ ipcMain.handle('obfuscate-ts', async (_event, tsCode: string) => {
   }
 });
 
-ipcMain.handle('save-to-file', async (event, content) => {
+ipcMain.handle('save-to-file', async (event:any, content:string) => {
   const { filePath } = await dialog.showSaveDialog({
     filters: [{ name: 'JavaScript', extensions: ['js'] }]
   });
@@ -470,7 +502,7 @@ ipcMain.handle('save-to-file', async (event, content) => {
   return 'キャンセルされました';
 });
 
-ipcMain.handle('save-ts-as-js', async (_event, tsCode: string) => {
+ipcMain.handle('save-ts-as-js', async (_event:any, tsCode: string) => {
   try {
     const jsCode = ts.transpileModule(tsCode, {
       compilerOptions: { module: ts.ModuleKind.CommonJS }
