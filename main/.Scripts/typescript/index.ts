@@ -434,7 +434,11 @@ ipcMain.handle('obfuscate-js', async (_event:any, code: string) => {
   try {
     // Step 1: 独自加工（コメントとダミー関数を注入）
     let jsCode = `
-      /* Copyright ${(new Date()).getFullYear()} ${SERVICE}, Inc */ ${code} function _helper_${Math.random().toString(36).slice(2)}(){return ${Math.floor(Math.random() * 1000)};}
+    /* Copyright ${(new Date()).getFullYear()} ${SERVICE}, Inc */
+    ${code}
+    function _helper_${Math.random().toString(36).slice(2)}() {
+      return ${Math.floor(Math.random() * 1000)};
+    }
     `;
 
     // Step 2: obfuscator にかける（ランダム設定で自然さを演出）
@@ -465,7 +469,11 @@ ipcMain.handle('obfuscate-ts', async (_event:any, tsCode: string) => {
 
     // Step 2: 独自加工（例: コメントとダミー関数を注入）
     jsCode = `
-      /* Copyright ${(new Date()).getFullYear()} ${SERVICE}, Inc */ ${jsCode} function _helper_${Math.random().toString(36).slice(2)}(){return ${Math.floor(Math.random() * 1000)};}
+    /* Copyright ${(new Date()).getFullYear()} ${SERVICE}, Inc */
+    ${jsCode}
+    function _helper_${Math.random().toString(36).slice(2)}() {
+      return ${Math.floor(Math.random() * 1000)};
+    }
     `;
 
     // Step 3: obfuscator にかける
