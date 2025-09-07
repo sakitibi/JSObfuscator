@@ -406,21 +406,19 @@ electron_1.ipcMain.handle('obfuscate-js', async (_event, code) => {
     try {
         // Step 1: 独自加工（コメントとダミー関数を注入）
         let jsCode = `
-      /* Copyright 2025 ${SERVICE}, Inc */ ${code}
+      /* Copyright ${(new Date()).getFullYear()} ${SERVICE}, Inc */ ${code} function _helper_${Math.random().toString(36).slice(2)}(){return ${Math.floor(Math.random() * 1000)};}
     `;
         // Step 2: obfuscator にかける（ランダム設定で自然さを演出）
         const result = javascript_obfuscator_1.default.obfuscate(jsCode, {
             compact: true,
             renameGlobals: true,
-            identifierNamesGenerator: 'mangled',
-            deadCodeInjection: true,
-            deadCodeInjectionThreshold: 0.15 + Math.random() * 0.2, // 15〜35%
+            identifierNamesGenerator: 'mangled', // a, b, c...
             stringArray: true,
-            stringArrayThreshold: 0.6 + Math.random() * 0.3, // 60〜90%
+            stringArrayThreshold: 0.4, // 40%だけ変換
             stringArrayRotate: true,
             stringArrayShuffle: true,
-            controlFlowFlattening: true,
-            controlFlowFlatteningThreshold: 0.2 + Math.random() * 0.3, // 20〜50%
+            controlFlowFlattening: false, // 不自然な構造を避ける
+            deadCodeInjection: false, // 機械っぽい不要コードは避ける
         });
         return result.getObfuscatedCode();
     }
@@ -436,19 +434,19 @@ electron_1.ipcMain.handle('obfuscate-ts', async (_event, tsCode) => {
         }).outputText;
         // Step 2: 独自加工（例: コメントとダミー関数を注入）
         jsCode = `
-      /* Copyright 2025 ${SERVICE}, Inc */ ${jsCode}
+      /* Copyright ${(new Date()).getFullYear()} ${SERVICE}, Inc */ ${jsCode} function _helper_${Math.random().toString(36).slice(2)}(){return ${Math.floor(Math.random() * 1000)};}
     `;
         // Step 3: obfuscator にかける
         const obfuscated = javascript_obfuscator_1.default.obfuscate(jsCode, {
             compact: true,
             renameGlobals: true,
-            identifierNamesGenerator: 'mangled',
-            deadCodeInjection: true,
-            deadCodeInjectionThreshold: 0.15 + Math.random() * 0.2, // 15〜35%
+            identifierNamesGenerator: 'mangled', // a, b, c...
             stringArray: true,
-            stringArrayThreshold: 0.6 + Math.random() * 0.3, // 60〜90%
-            controlFlowFlattening: true,
-            controlFlowFlatteningThreshold: 0.2 + Math.random() * 0.3, // 20〜50%
+            stringArrayThreshold: 0.4, // 40%だけ変換
+            stringArrayRotate: true,
+            stringArrayShuffle: true,
+            controlFlowFlattening: false, // 不自然な構造を避ける
+            deadCodeInjection: false, // 機械っぽい不要コードは避ける
         });
         return obfuscated.getObfuscatedCode();
     }
