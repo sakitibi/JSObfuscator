@@ -411,10 +411,11 @@ electron_1.ipcMain.handle('obfuscate-js', async (_event, code) => {
     function _helper_${Math.random().toString(36).slice(2)}() {
       return ${Math.floor(Math.random() * 1000)};
     }
+    _helper_${Math.random().toString(36).slice(2)}();
     `;
         // Step 2: obfuscator にかける（ランダム設定で自然さを演出）
         const result = javascript_obfuscator_1.default.obfuscate(jsCode, {
-            compact: true,
+            compact: false,
             renameGlobals: true,
             identifierNamesGenerator: 'mangled', // a,b,c... にする
             stringArray: false, // 配列化を禁止（0x系を避ける）
@@ -443,10 +444,11 @@ electron_1.ipcMain.handle('obfuscate-ts', async (_event, tsCode) => {
     function _helper_${Math.random().toString(36).slice(2)}() {
       return ${Math.floor(Math.random() * 1000)};
     }
+    _helper_${Math.random().toString(36).slice(2)}();
     `;
         // Step 3: obfuscator にかける
         const obfuscated = javascript_obfuscator_1.default.obfuscate(jsCode, {
-            compact: true,
+            compact: false,
             renameGlobals: true,
             identifierNamesGenerator: 'mangled', // a,b,c... にする
             stringArray: false, // 配列化を禁止（0x系を避ける）
