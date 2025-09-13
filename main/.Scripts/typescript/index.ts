@@ -444,14 +444,14 @@ ipcMain.handle('obfuscate-js', async (_event:any, code: string) => {
     `;
 
     const result = obfuscator.obfuscate(jsCode, {
-      compact: false,
+      compact: true,
       renameGlobals: true,
       identifierNamesGenerator: 'mangled',
-      stringArray: false,
+      stringArray: true,
       controlFlowFlattening: false,
-      deadCodeInjection: false,
+      deadCodeInjection: true,
       transformObjectKeys: true,
-      simplify: false,
+      simplify: true,
       numbersToExpressions: false,
     });
 
@@ -479,14 +479,14 @@ ipcMain.handle('obfuscate-ts', async (_event:any, tsCode: string) => {
     `;
 
     const obfuscated = obfuscator.obfuscate(jsCode, {
-      compact: false,
+      compact: true,
       renameGlobals: true,
       identifierNamesGenerator: 'mangled',
-      stringArray: false,
+      stringArray: true,
       controlFlowFlattening: false,
-      deadCodeInjection: false,
+      deadCodeInjection: true,
       transformObjectKeys: true,
-      simplify: false,
+      simplify: true,
       numbersToExpressions: false,
     });
 

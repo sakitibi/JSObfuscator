@@ -414,14 +414,14 @@ electron_1.ipcMain.handle('obfuscate-js', async (_event, code) => {
     ${helperName}();
     `;
         const result = javascript_obfuscator_1.default.obfuscate(jsCode, {
-            compact: false,
+            compact: true,
             renameGlobals: true,
             identifierNamesGenerator: 'mangled',
-            stringArray: false,
+            stringArray: true,
             controlFlowFlattening: false,
-            deadCodeInjection: false,
+            deadCodeInjection: true,
             transformObjectKeys: true,
-            simplify: false,
+            simplify: true,
             numbersToExpressions: false,
         });
         return result.getObfuscatedCode();
@@ -445,14 +445,14 @@ electron_1.ipcMain.handle('obfuscate-ts', async (_event, tsCode) => {
     ${helperName}();
     `;
         const obfuscated = javascript_obfuscator_1.default.obfuscate(jsCode, {
-            compact: false,
+            compact: true,
             renameGlobals: true,
             identifierNamesGenerator: 'mangled',
-            stringArray: false,
+            stringArray: true,
             controlFlowFlattening: false,
-            deadCodeInjection: false,
+            deadCodeInjection: true,
             transformObjectKeys: true,
-            simplify: false,
+            simplify: true,
             numbersToExpressions: false,
         });
         return obfuscated.getObfuscatedCode();
