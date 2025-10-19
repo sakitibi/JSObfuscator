@@ -48,7 +48,6 @@ function startProgressBar() {
       ultraUniqueProgress = 100;
       ultraUniqueProgressText.innerHTML = '100%';
       clearInterval(ultraUniqueProgressInterval);
-        const ultraLogined = localStorage.getItem("ultraLogined");
         if (!ultraLogined) {
           window.location.replace('.login.html');
         } else {
