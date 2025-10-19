@@ -8,7 +8,27 @@ let ultraUniqueProgressText = document.getElementById('progress-text');
 let IsObfuscate = false;
 let login;
 
+// ログイン中ユーザーの情報を取得
+async function getUser() {
+  const { data: { user }, error } = await window.supabase.auth.getUser();
+  if (error) {
+    console.error("ユーザー取得エラー:", error.message);
+    return null;
+  }
+  return user;
+}
+
 function startProgressBar() {
+  setTimeout(async () => {
+    try{
+      if(ultraUniqueProgress >= 100){
+        throw new Error("ロードが先に終わった為\nログイン状態を取得出来ません");
+      }
+      ultraLogined = Boolean(await getUser());
+    } catch(e){
+      console.error("ログイン状態を取得出来ません: ", e);
+    }
+  }, 1000);
   const ultraUniqueProgressInterval = setInterval(() => {
     if(IsObfuscate === true){
       setInterval(() => {

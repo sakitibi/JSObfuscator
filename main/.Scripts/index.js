@@ -8,7 +8,6 @@ const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const os_1 = __importDefault(require("os"));
 const javascript_obfuscator_1 = __importDefault(require("javascript-obfuscator"));
-const keytar_1 = __importDefault(require("keytar"));
 const typescript_1 = __importDefault(require("typescript"));
 let win = null;
 let pendingLink = null; // ここで一時保存
@@ -55,130 +54,26 @@ function encodeBase64Unicode(str) {
 }
 electron_1.ipcMain.handle('accountsettings', async () => {
     await electron_1.shell.openExternal('https://sakitibi-com9.webnode.jp/page/24/b961c547-90b1-0d30-a87e-8bb1aa67eca9/');
-    // email を先に取得する必要がある！
-    let email;
-    if (win && win.webContents) {
-        const result = await keytar_1.default.getPassword(`${SERVICE}_email`, 'current');
-        email = result ?? undefined; // ← ここで null を undefined に変換！
-    }
-    // 🔐 keytar削除も忘れず
-    if (email) {
-        await keytar_1.default.deletePassword(`${SERVICE}_password`, email);
-        await keytar_1.default.deletePassword(`${SERVICE}_username`, email);
-        await keytar_1.default.deletePassword(`${SERVICE}_select`, email);
-        await keytar_1.default.deletePassword(`${SERVICE}_email`, 'current');
-    }
     // 🔄 localStorageの追加削除＋リダイレクト
     if (win && win.webContents) {
         await win.webContents.executeJavaScript(`
       localStorage.removeItem("ultraLogined");
+      localStorage.removeItem("youtube-subscribe");
+      localStorage.removeItem("SaveData");
       location.href = '.login.html';
     `);
     }
 });
-electron_1.ipcMain.handle('set-current-email', async (_e, email) => {
-    await keytar_1.default.setPassword(`${SERVICE}_email`, 'current', email);
-    return true;
-});
-electron_1.ipcMain.handle('get-current-email', async () => {
-    const currentEmail = await keytar_1.default.getPassword(`${SERVICE}_email`, 'current');
-    return currentEmail;
-});
-electron_1.ipcMain.handle('save-credentials', async (_e, email, password, username, birthday, option) => {
-    try {
-        console.log("[Main] save-credentials 呼び出し:", email, password, username, birthday, option);
-        await keytar_1.default.setPassword(`${SERVICE}_password`, email, password);
-        await keytar_1.default.setPassword(`${SERVICE}_username`, email, username);
-        await keytar_1.default.setPassword(`${SERVICE}_birthday`, email, birthday);
-        const safeOption = (option ?? '0').toString().trim();
-        await keytar_1.default.setPassword(`${SERVICE}_select`, email, safeOption);
-        const savedOption = await keytar_1.default.getPassword(`${SERVICE}_select`, email);
-        console.log("[save-credentials] 保存後のオプション:", savedOption);
-        await keytar_1.default.setPassword(`${SERVICE}_email`, 'current', email);
-        console.log('[save-credentials] 保存された current email:', email);
-        console.log("[Main] save-credentials 呼び出し:", { email, password, username, birthday, option });
-        return true;
-    }
-    catch (error) {
-        console.error("セーブエラー", error);
-        return false;
-    }
-});
-electron_1.ipcMain.handle('get-credentials', async (_e, email) => {
-    try {
-        console.log('[get-credentials] typeof email:', typeof email);
-        console.log('[get-credentials] raw email:', email);
-        console.log('[get-credentials] is trimmed empty?:', email?.trim() === '');
-        console.log('[get-credentials] 受け取った email:', JSON.stringify(email), '長さ:', email?.length);
-        if (!email || typeof email !== 'string' || email.trim() === '') {
-            console.warn('[get-credentials] 無効な email:', email);
-            throw new Error('Account is required.');
-        }
-        const password = await keytar_1.default.getPassword(`${SERVICE}_password`, email);
-        const username = await keytar_1.default.getPassword(`${SERVICE}_username`, email);
-        const birthday = await keytar_1.default.getPassword(`${SERVICE}_birthday`, email);
-        const option = (await keytar_1.default.getPassword(`${SERVICE}_select`, email))?.trim() || '0';
-        const currentEmail = await keytar_1.default.getPassword(`${SERVICE}_email`, 'current');
-        console.log('[get-credentials] 現在保存されている current email:', currentEmail);
-        return { password, username, birthday, option };
-    }
-    catch (error) {
-        console.error("ゲットエラー", error);
-        return false;
-    }
-});
-electron_1.ipcMain.handle('delete-credentials', async (_e, email) => {
-    await keytar_1.default.deletePassword(`${SERVICE}_password`, email);
-    await keytar_1.default.deletePassword(`${SERVICE}_username`, email);
-    await keytar_1.default.deletePassword(`${SERVICE}_birthday`, email);
-    await keytar_1.default.deletePassword(`${SERVICE}_select`, email);
-    await keytar_1.default.deletePassword(`${SERVICE}_email`, 'current');
-    return true;
-});
-electron_1.ipcMain.handle('list-credentials', async () => {
-    const credentials = await keytar_1.default.findCredentials(SERVICE);
-    console.log('[keytar] 現在保存されている資格情報:');
-    credentials.forEach(c => console.log(`account: ${c.account}, password: ${c.password}`));
-    return credentials;
-});
-electron_1.ipcMain.handle('save-select', async (_e, email, option) => {
-    await keytar_1.default.setPassword(`${SERVICE}_select`, email, option.toString().trim());
-    return true;
-});
-electron_1.ipcMain.handle('get-select', async (_e, email) => {
-    const select = await keytar_1.default.getPassword(`${SERVICE}_select`, email);
-    return select || '';
-});
-electron_1.ipcMain.handle('get-birthday', async (_e, email) => {
-    try {
-        console.log('[get-credentials] typeof email:', typeof email);
-        console.log('[get-credentials] raw email:', email);
-        console.log('[get-credentials] is trimmed empty?:', email?.trim() === '');
-        console.log('[get-credentials] 受け取った email:', JSON.stringify(email), '長さ:', email?.length);
-        if (!email || typeof email !== 'string' || email.trim() === '') {
-            console.warn('[get-credentials] 無効な email:', email);
-            throw new Error('Account is required.');
-        }
-        const birthday = await keytar_1.default.getPassword(`${SERVICE}_birthday`, email);
-        return { birthday };
-    }
-    catch (error) {
-        console.error("ゲットエラー", error);
-        return false;
-    }
-});
-electron_1.ipcMain.handle('loginredirects', async () => {
+electron_1.ipcMain.handle('loginredirects', async (_event, email, password, username, birthday, optional) => {
     try {
         // 'current' アカウントとして保存された email を取得
-        const email = await keytar_1.default.getPassword(`${SERVICE}_email`, 'current');
         if (!email) {
             return { success: false, error: 'email 未設定' };
         }
-        // keytar から各種資格情報を取得
-        const passwordRaw = await keytar_1.default.getPassword(`${SERVICE}_password`, email);
-        const usernameRaw = await keytar_1.default.getPassword(`${SERVICE}_username`, email);
-        const birthdayRaw = await keytar_1.default.getPassword(`${SERVICE}_birthday`, email);
-        const selectValue = await keytar_1.default.getPassword(`${SERVICE}_select`, email) || '0';
+        const passwordRaw = password;
+        const usernameRaw = username;
+        const birthdayRaw = birthday;
+        const selectValue = optional || '0';
         console.log('[loginredirects] selectValue:', selectValue, 'typeof:', typeof selectValue);
         const select = selectValue?.trim() || '0';
         if (!passwordRaw || !usernameRaw || !birthdayRaw) {
