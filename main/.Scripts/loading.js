@@ -6,7 +6,7 @@ let ultraUniqueProgress = 0;
 let ultraUniqueProgressFill = document.getElementById('progress-fill'); 
 let ultraUniqueProgressText = document.getElementById('progress-text');
 let IsObfuscate = false;
-let login;
+let ultraLogined = null;
 
 // ログイン中ユーザーの情報を取得
 async function getUser() {
