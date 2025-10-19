@@ -1,0 +1,63 @@
+{
+  "name": "JSObfuscator",
+  "version": "2.0.40",
+  "main": "main/.Scripts/index.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . --overwrite",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.13ninstudio.jsobfuscator",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": "universal"
+        }
+      ],
+      "protocols": [
+        {
+          "name": "jsobfuscator Protocol",
+          "schemes": [
+            "jsobfuscator"
+          ]
+        }
+      ],
+      "icon": "build/icon.icns"
+    },
+    "dmg": {
+      "title": "JSObfuscator",
+      "icon": "build/icon.icns",
+      "iconSize": 128,
+      "contents": [
+        {
+          "x": 130,
+          "y": 220,
+          "type": "file"
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2",
+    "fs": "^0.0.1-security",
+    "javascript-obfuscator": "^4.1.1",
+    "keytar": "^7.9.0",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "electron": "^38.3.0",
+    "electron-builder": "^26.0.12",
+    "node-abi": "^4.14.0",
+    "ts-node": "^10.9.2"
+  }
+}
