@@ -49,27 +49,27 @@ function obfuscateStep() {
         } else {
             ultraUniqueRandomSpeed = Math.floor(Math.random() * 101 / 5);
         }
-            if (ultraUniqueProgress <= 100) {
-                ultraUniqueProgressText.innerHTML = `${ultraUniqueProgress}%`; 
-            }
+        if (ultraUniqueProgress <= 100) {
+            ultraUniqueProgressText.innerHTML = `${ultraUniqueProgress}%`; 
+        }
 
-            if (ultraUniqueProgress >= 40 && ultraUniqueCooldown > 0) {
-                ultraUniqueCooldown -= 1;
-            } else if (ultraUniqueProgress >= 100 || current >= tsCount) {
-                ultraUniqueProgress = 100;
-                ultraUniqueProgressText.innerHTML = '100%';
-                clearInterval(ultraUniqueProgressInterval);
-                if (!ultraLogined) {
-                    window.location.replace('.login.html');
-                } else {
-                    ultraUniqueLoadingScreenEl.classList.add("loaded");
-                }
+        if (ultraUniqueProgress >= 40 && ultraUniqueCooldown > 0) {
+            ultraUniqueCooldown -= 1;
+        } else if (ultraUniqueProgress >= 100 || current >= tsCount) {
+            ultraUniqueProgress = 100;
+            ultraUniqueProgressText.innerHTML = '100%';
+            clearInterval(ultraUniqueProgressInterval);
+            if (!ultraLogined) {
+                window.location.replace('.login.html');
             } else {
-                ultraUniqueProgress += Math.floor(Math.random() * ultraUniqueRandomSpeed); // ランダムに進む
+                ultraUniqueLoadingScreenEl.classList.add("loaded");
             }
+        } else {
+            ultraUniqueProgress += Math.floor(Math.random() * ultraUniqueRandomSpeed); // ランダムに進む
+        }
 
-            ultraUniqueProgressFill.style.width = ultraUniqueProgress + '%';
-        }, 100);
+        ultraUniqueProgressFill.style.width = ultraUniqueProgress + '%';
+    }, 100);
     window.electronAPI.obfuscateTS(currentCode).then(async result => {
         currentCode = result;
         step++;

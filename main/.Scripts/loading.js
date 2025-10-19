@@ -48,11 +48,11 @@ function startProgressBar() {
       ultraUniqueProgress = 100;
       ultraUniqueProgressText.innerHTML = '100%';
       clearInterval(ultraUniqueProgressInterval);
-        if (!ultraLogined) {
-          window.location.replace('.login.html');
-        } else {
-          ultraUniqueLoadingScreenEl.classList.add("loaded");
-        }
+      if (!ultraLogined) {
+        window.location.replace('.login.html');
+      } else {
+        ultraUniqueLoadingScreenEl.classList.add("loaded");
+      }
     } else {
       ultraUniqueProgress += Math.floor(Math.random() * ultraUniqueRandomSpeed); // ランダムに進む
     }
