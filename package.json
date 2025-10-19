@@ -44,7 +44,13 @@
           "path": "/Applications"
         }
       ]
-    }
+    },
+    "files": [
+      "!dist/*",
+      "!push",
+      "!compile",
+      "!.vscode/*"
+    ]
   },
   "dependencies": {
     "electron-updater": "^6.6.2",
