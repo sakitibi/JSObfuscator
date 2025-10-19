@@ -96,6 +96,9 @@ electron_1.ipcMain.handle('loginredirects', async (_event, email, password, user
         return { success: false, error: err.message || err };
     }
 });
+electron_1.ipcMain.handle('open-url', async (_event, url) => {
+    await electron_1.shell.openExternal(String(url));
+});
 electron_1.ipcMain.handle('get-local-ip', () => {
     const nets = os_1.default.networkInterfaces();
     for (const name of Object.keys(nets)) {

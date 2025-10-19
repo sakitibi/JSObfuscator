@@ -17,6 +17,7 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
     loginredirects: () => electron_1.ipcRenderer.invoke('loginredirects'),
     saveTSasJS: (tsCode) => electron_1.ipcRenderer.invoke('save-ts-as-js', tsCode),
     obfuscateTS: (code) => electron_1.ipcRenderer.invoke('obfuscate-ts', code),
+    OpenURL: (URL) => electron_1.ipcRenderer.invoke('open-url', URL),
 });
 electron_1.contextBridge.exposeInMainWorld('secureAPI', {
     save: (email, password, username, birthday, option) => electron_1.ipcRenderer.invoke('save-credentials', email, password, username, birthday, option),

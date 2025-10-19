@@ -3,7 +3,6 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import obfuscator from 'javascript-obfuscator';
-import keytar from 'keytar';
 import ts from 'typescript';
 
 let win: BrowserWindow | null = null;
@@ -104,6 +103,10 @@ ipcMain.handle('loginredirects', async (_event, email, password, username, birth
     console.error("[loginredirects] エラー:", err);
     return { success: false, error: err.message || err };
   }
+});
+
+ipcMain.handle('open-url', async (_event, url) => {
+  await shell.openExternal(String(url));
 });
 
 ipcMain.handle('get-local-ip', () => {

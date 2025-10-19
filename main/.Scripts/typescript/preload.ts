@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   loginredirects: () => ipcRenderer.invoke('loginredirects'),
   saveTSasJS: (tsCode: string) => ipcRenderer.invoke('save-ts-as-js', tsCode),
   obfuscateTS: (code:any) => ipcRenderer.invoke('obfuscate-ts', code),
+  OpenURL: (URL:string) => ipcRenderer.invoke('open-url', URL),
 });
 
 contextBridge.exposeInMainWorld('secureAPI', {
