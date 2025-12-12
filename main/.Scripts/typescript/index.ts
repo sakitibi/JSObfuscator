@@ -188,7 +188,7 @@ function updateMenu(win: BrowserWindow) {
             if (focusedWindow) focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
           },
         },
-        //{ label: 'DevTools を開く', accelerator: 'Cmd+Option+I', role: "toggleDevTools"},
+        { label: 'DevTools を開く', accelerator: 'Cmd+Option+I', role: "toggleDevTools"},
       ],
     },
     {

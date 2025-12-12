@@ -47,15 +47,9 @@ document.getElementById('obfuscate-form').addEventListener('submit', async (even
             ultraUniqueProgress = 100;
             ultraUniqueProgressText.innerHTML = '100%';
             clearInterval(ultraUniqueProgressInterval);
-            
-                const ultraLogined = localStorage.getItem("ultraLogined");
-                if (!ultraLogined) {
-                window.location.replace('.login.html');
-                } else {
                 ultraUniqueLoadingScreenEl.classList.add("loaded");
-                }
             } else {
-            ultraUniqueProgress += Math.floor(Math.random() * ultraUniqueRandomSpeed); // ランダムに進む
+                ultraUniqueProgress += Math.floor(Math.random() * ultraUniqueRandomSpeed); // ランダムに進む
             }
 
             ultraUniqueProgressFill.style.width = ultraUniqueProgress + '%';
