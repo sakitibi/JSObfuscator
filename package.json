@@ -1,10 +1,9 @@
 {
   "name": "JSObfuscator",
-  "version": "2.0.40",
+  "version": "2.0.60",
   "main": "main/.Scripts/index.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . --overwrite",
     "dist": "electron-builder"
   },
   "build": {
@@ -14,7 +13,9 @@
       "target": [
         {
           "target": "dmg",
-          "arch": "universal"
+          "arch": [
+            "arm64"
+          ]
         }
       ],
       "protocols": [
@@ -60,7 +61,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.0.10",
-    "electron": "^39.2.6",
+    "electron": "^39.2.5",
     "electron-builder": "^26.0.11",
     "node-abi": "^4.14.0",
     "ts-node": "^10.9.2"
